@@ -14,7 +14,7 @@ import javafx.scene.shape.Ellipse;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-//Update
+//Update 2
 public class AnimateSnowman extends Application {
     static Circle head = new Circle();
     static Circle chest = new Circle();
