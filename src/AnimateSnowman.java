@@ -1,118 +1,225 @@
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Ellipse;
-import javafx.stage.Stage;
-import javafx.util.Duration;
+    import javafx.animation.KeyFrame;
+    import javafx.animation.KeyValue;
+    import javafx.animation.Timeline;
+    import javafx.application.Application;
+    import javafx.scene.Scene;
+    import javafx.scene.control.Button;
+    import javafx.scene.layout.HBox;
+    import javafx.scene.layout.Pane;
+    import javafx.scene.paint.Color;
+    import javafx.scene.shape.*;
+    import javafx.stage.Stage;
+    import javafx.util.Duration;
 
-//Update 2
-public class AnimateSnowman extends Application {
-    static Circle head = new Circle();
-    static Circle chest = new Circle();
-    static Circle bottom = new Circle();
-    static Ellipse leftArm = new Ellipse();
-    static Ellipse rightArm = new Ellipse();
-    static Timeline timeLine;
-    final int SCENE_WIDTH = 500;
-    final int SCENE_HEIGHT = 350;
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+public class AnimateSnowman extends Application 
+{
+	final int SCENE_WIDTH = 500;
+	final int SCENE_HEIGHT = 350;
+	
+	static Circle head = new Circle();
+	static Circle chest = new Circle();
+	static Circle bottom = new Circle();
+	static Circle leftEye = new Circle();
+	static Circle rightEye = new Circle();
+	static Circle sun = new Circle();
+	static Circle heart = new Circle();
+	
+	static Ellipse leftArm = new Ellipse();
+	static Ellipse rightArm = new Ellipse();
+	
+	static Arc mouth = new Arc();
 
-    private void drawHead() {
-        //head = new Circle();
-        head.setCenterX(SCENE_WIDTH / 2);
-        head.setCenterY(135);
-        head.setRadius(25);
-        head.setFill(Color.AQUAMARINE);
-    }
+	static Button startAnimation = new Button();
+	static Button exitAnimation = new Button();
+	
+	static Pane animationPane = new Pane();
+	
+	static HBox hbox = new HBox();
+	
+	static Timeline timeLine;
+	
+	private void drawSun()
+	{
+		sun.setCenterX(SCENE_WIDTH);
+		sun.setCenterY(0);
+		sun.setRadius(75);		
+		sun.setFill(Color.YELLOW);
+	}
+	
+	private void drawHead()
+	{
+		head.setCenterX(SCENE_WIDTH / 2);
+		head.setCenterY(135);
+		head.setRadius(25);		
+		head.setFill(Color.AQUAMARINE);
+	}
+	private void drawMouth()
+	{
+		mouth.setCenterX(SCENE_WIDTH / 2);
+		mouth.setCenterY(95);
+		mouth.setLength(30);
+		mouth.setRadiusX(30);
+		mouth.setRadiusY(53);
+		mouth.setStartAngle(255);
+		mouth.setFill(Color.BLACK);
+		
+		timeLine = new Timeline();
+		timeLine.setCycleCount(Timeline.INDEFINITE);
+		timeLine.setAutoReverse(true);
 
-    private void drawChest() {
-        //chest = new Circle();
-        chest.setCenterX(SCENE_WIDTH / 2);
-        chest.setCenterY(195);
-        chest.setRadius(45);
-        chest.setFill(Color.AQUAMARINE);
-    }
+		KeyValue mouthXValue = new KeyValue(mouth.scaleXProperty(), 1.3);
+		KeyValue mouthYValue = new KeyValue(mouth.scaleYProperty(), 2);
+		KeyFrame keyFrameX  = new KeyFrame(Duration.millis(1000), mouthXValue);
+		KeyFrame keyFrameY  = new KeyFrame(Duration.millis(1000), mouthYValue);
+		
+		timeLine.getKeyFrames().addAll(keyFrameX, keyFrameY); 
+		timeLine.play();
+	}
+	
+	private void drawLeftEye()
+	{
+		leftEye.setCenterX(SCENE_WIDTH/2 + 7);
+		leftEye.setCenterY(130);
+		leftEye.setRadius(4);		
+		leftEye.setFill(Color.BLUE);
 
-    private void drawBottom() {
-        //bottom = new Circle();
-        bottom.setCenterX(SCENE_WIDTH / 2);
-        bottom.setCenterY(265);
-        bottom.setRadius(65);
-        bottom.setFill(Color.AQUAMARINE);
-    }
+		timeLine = new Timeline();
+		timeLine.setCycleCount(Timeline.INDEFINITE);
+		timeLine.setAutoReverse(true);
 
-    private void drawLeftArm() {
-        //leftArm = new Ellipse();
-        leftArm.setRadiusX(50.0);
-        leftArm.setRadiusY(15.0);
-        leftArm.setCenterX((SCENE_WIDTH + leftArm.getRadiusX() + chest.getRadius()) / 2);
-        leftArm.setCenterY(175.0);
-        leftArm.setFill(Color.AQUAMARINE);
+		KeyValue leftEyeValue = new KeyValue(leftEye.centerXProperty(), SCENE_WIDTH/2 + 4);
+		KeyFrame keyFrame  = new KeyFrame(Duration.millis(1000), leftEyeValue);
+		
+		timeLine.getKeyFrames().addAll(keyFrame); 
+		timeLine.play();
+	}
+	
+	private void drawRightEye()
+	{
+		rightEye.setCenterX(SCENE_WIDTH/2 - 7);
+		rightEye.setCenterY(130);
+		rightEye.setRadius(4);		
+		rightEye.setFill(Color.GREEN);
+		
+		timeLine = new Timeline();
+		timeLine.setCycleCount(Timeline.INDEFINITE);
+		timeLine.setAutoReverse(true);
 
-        timeLine = new Timeline();
-        timeLine.setCycleCount(Timeline.INDEFINITE);
-        timeLine.setAutoReverse(true);
-        //KeyValue LeftValue = new KeyValue(leftArm.centerYProperty(), 165);
-        KeyValue LeftValue = new KeyValue(leftArm.rotateProperty(), 10);
-        KeyFrame keyFrame = new KeyFrame(Duration.millis(1000), LeftValue);
-        timeLine.getKeyFrames().addAll(keyFrame);
-        timeLine.play();
-    }
+		KeyValue rightEyeValue = new KeyValue(rightEye.centerXProperty(), SCENE_WIDTH/2 - 4);
+		KeyFrame keyFrame  = new KeyFrame(Duration.millis(1000), rightEyeValue);
+		
+		timeLine.getKeyFrames().addAll(keyFrame); 
+		timeLine.play();
+	}
+	
+	private void drawChest()
+	{
+		chest.setCenterX(SCENE_WIDTH/2);
+		chest.setCenterY(195);
+		chest.setRadius(45);		
+		chest.setFill(Color.AQUAMARINE);
+	}
+	
+	private void drawHeart()
+	{
+		heart.setCenterX(SCENE_WIDTH/2 + 15);
+		heart.setCenterY(190);
+		heart.setRadius(7);		
+		heart.setFill(Color.PURPLE);
+		
+		timeLine = new Timeline();
+		timeLine.setCycleCount(Timeline.INDEFINITE);
+		timeLine.setAutoReverse(true);
 
-    private void drawRightArm() {
-        //rightArm = new Ellipse();
-        rightArm.setRadiusX(50.0);
-        rightArm.setRadiusY(15.0);
-        rightArm.setCenterX((SCENE_WIDTH - rightArm.getRadiusX() - chest.getRadius()) / 2);
-        rightArm.setCenterY(175.0);
+		KeyValue heartXValue = new KeyValue(heart.scaleXProperty(), 1.5);
+		KeyValue heartYValue = new KeyValue(heart.scaleYProperty(), 1.5);
+		KeyFrame keyFrameX  = new KeyFrame(Duration.millis(500), heartXValue);
+		KeyFrame keyFrameY  = new KeyFrame(Duration.millis(500), heartYValue);
+		
+		timeLine.getKeyFrames().addAll(keyFrameX, keyFrameY); 
+		timeLine.play();
+	}
+	
+	private void drawBottom()
+	{
+		bottom.setCenterX(SCENE_WIDTH / 2);
+		bottom.setCenterY(265);
+		bottom.setRadius(65);	
+		bottom.setFill(Color.AQUAMARINE);
+	}
+	
+	private void drawLeftArm()
+	{
+		leftArm.setRadiusX(50.0);
+		leftArm.setRadiusY(15.0);
+		leftArm.setCenterX((SCENE_WIDTH + leftArm.getRadiusX() + chest.getRadius()) / 2);
+		leftArm.setCenterY(175.0);
+		
+		leftArm.setFill(Color.AQUAMARINE);
 
-        rightArm.setFill(Color.AQUAMARINE);
-        timeLine = new Timeline();
-        timeLine.setCycleCount(Timeline.INDEFINITE);
-        timeLine.setAutoReverse(true);
-        //KeyValue RightValue = new KeyValue(rightArm.centerYProperty(), 165);
-        KeyValue RightValue = new KeyValue(rightArm.rotateProperty(), 10);
-        KeyFrame keyFrame = new KeyFrame(Duration.millis(1000), RightValue);
-        timeLine.getKeyFrames().addAll(keyFrame);
-        timeLine.play();
-    }
+		timeLine = new Timeline();
+		timeLine.setCycleCount(Timeline.INDEFINITE);
+		timeLine.setAutoReverse(true);
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Button startAnimation;
-        Button exitAnimation;
-        Pane animationPane = new Pane();
-        HBox hbox = new HBox();
-        Canvas canvas = new Canvas(500, 350);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        startAnimation = new Button();
-        exitAnimation = new Button();
-        startAnimation.setText("Start Animation");
-        exitAnimation.setText("Exit Animation");
-        drawHead();
-        drawChest();
-        drawBottom();
-        drawLeftArm();
-        drawRightArm();
-        animationPane.getChildren().add(canvas);
-        animationPane.getChildren().addAll(head, chest, bottom, leftArm, rightArm);
-        //animationPane.setStyle("-fx-background-color: red");
-        primaryStage.setTitle("Animate Rectangle");
-        Scene scene = new Scene(animationPane, SCENE_WIDTH, SCENE_HEIGHT);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
+		KeyValue leftArmValue = new KeyValue(leftArm.rotateProperty(), 10);
+		KeyFrame keyFrame  = new KeyFrame(Duration.millis(1000), leftArmValue);
+		
+		timeLine.getKeyFrames().addAll(keyFrame); 
+		timeLine.play();
+	}
+	
+	private void drawRightArm()
+	{
+		rightArm.setRadiusX(50.0);
+		rightArm.setRadiusY(15.0);
+		rightArm.setCenterX((SCENE_WIDTH - rightArm.getRadiusX() - chest.getRadius()) / 2);
+		rightArm.setCenterY(175.0);
+
+		rightArm.setFill(Color.AQUAMARINE);
+		
+		timeLine = new Timeline();
+		timeLine.setCycleCount(Timeline.INDEFINITE);
+		timeLine.setAutoReverse(true);
+
+		KeyValue rightArmValue = new KeyValue(rightArm.rotateProperty(), 10);
+		KeyFrame keyFrame  = new KeyFrame(Duration.millis(1000), rightArmValue);
+		
+		timeLine.getKeyFrames().addAll(keyFrame); 
+		timeLine.play();	
+	}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception 
+	{
+		startAnimation.setText("Start Animation");
+		exitAnimation.setText("Exit Animation");
+		
+		drawSun();
+		drawHead();
+		drawChest();
+		drawBottom();
+		drawHeart();
+		
+		drawLeftEye();
+		drawRightEye();
+		drawMouth();
+		
+		drawLeftArm();
+		drawRightArm();
+
+		animationPane.getChildren().addAll(sun, head, chest, bottom, leftArm, rightArm, heart, leftEye, rightEye, mouth);
+		animationPane.setStyle("-fx-background-color: red");
+		
+		primaryStage.setTitle("Animate Rectangle");
+    	Scene scene = new Scene(animationPane,SCENE_WIDTH,SCENE_HEIGHT);
+    	primaryStage.setScene(scene);
+    	primaryStage.show();
+	}
+	
+	public static void main(String[] args) 
+	{
+		launch(args);
+	}
 
 }
