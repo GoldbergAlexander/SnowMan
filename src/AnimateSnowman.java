@@ -30,8 +30,8 @@ public class AnimateSnowman extends Application
 	
 	static Arc mouth = new Arc();
 
-	static Button startAnimation = new Button();
-	static Button exitAnimation = new Button();
+	Button startAnimation = new Button();
+	Button exitAnimation = new Button();
 	
 	static Pane animationPane = new Pane();
 	
