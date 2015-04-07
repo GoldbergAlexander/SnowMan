@@ -11,7 +11,7 @@
     import javafx.stage.Stage;
     import javafx.util.Duration;
 
-//My first comment
+
 public class AnimateSnowman extends Application 
 {
 	final int SCENE_WIDTH = 500;
@@ -209,7 +209,7 @@ public class AnimateSnowman extends Application
 		drawRightArm();
 
 		animationPane.getChildren().addAll(sun, head, chest, bottom, leftArm, rightArm, heart, leftEye, rightEye, mouth);
-		animationPane.setStyle("-fx-background-color: red");
+		animationPane.setStyle("-fx-background-color: ghostwhite");
 		
 		primaryStage.setTitle("Animate Rectangle");
     	Scene scene = new Scene(animationPane,SCENE_WIDTH,SCENE_HEIGHT);
