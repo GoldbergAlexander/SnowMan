@@ -11,7 +11,7 @@
     import javafx.stage.Stage;
     import javafx.util.Duration;
 
-
+//My first comment
 public class AnimateSnowman extends Application 
 {
 	final int SCENE_WIDTH = 500;
