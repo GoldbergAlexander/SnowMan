@@ -1,18 +1,27 @@
+    import com.sun.scenario.effect.Glow;
     import javafx.animation.KeyFrame;
     import javafx.animation.KeyValue;
     import javafx.animation.Timeline;
     import javafx.application.Application;
+    import javafx.geometry.Insets;
+    import javafx.geometry.Pos;
     import javafx.scene.Scene;
     import javafx.scene.control.Button;
     import javafx.scene.layout.HBox;
     import javafx.scene.layout.Pane;
+    import javafx.scene.layout.BorderPane;
     import javafx.scene.paint.Color;
     import javafx.scene.shape.*;
     import javafx.stage.Stage;
     import javafx.util.Duration;
+    import javafx.scene.Group;
+    import javafx.scene.Node;
+    import javafx.scene.effect.*;
+
+    import java.util.Objects;
 
 
-public class AnimateSnowman extends Application 
+    public class AnimateSnowman extends Application
 {
 	final int SCENE_WIDTH = 500;
 	final int SCENE_HEIGHT = 350;
@@ -32,6 +41,11 @@ public class AnimateSnowman extends Application
 
 	Button startAnimation = new Button();
 	Button exitAnimation = new Button();
+
+    BorderPane borderPane = new BorderPane();
+    HBox buttonHBox = new HBox();
+
+    Group snowManGroup = new Group();
 	
 	static Pane animationPane = new Pane();
 	
@@ -63,6 +77,7 @@ public class AnimateSnowman extends Application
 		mouth.setRadiusY(53);
 		mouth.setStartAngle(255);
 		mouth.setFill(Color.BLACK);
+
 		
 		timeLine = new Timeline();
 		timeLine.setCycleCount(Timeline.INDEFINITE);
@@ -189,6 +204,22 @@ public class AnimateSnowman extends Application
 		timeLine.play();	
 	}
 
+    private void setUpBlending(){
+        snowManGroup.getChildren().add(head);
+        snowManGroup.getChildren().add(chest);
+        snowManGroup.getChildren().add(bottom);
+        snowManGroup.getChildren().add(leftEye);
+        snowManGroup.getChildren().add(rightEye);
+        snowManGroup.getChildren().add(leftArm);
+        snowManGroup.getChildren().add(rightArm);
+        Node[] nodes = (Node[])snowManGroup.getChildren().toArray();
+        for (Node n : nodes){
+          // n.setEffect();
+        }
+
+
+    }
+
 	@Override
 	public void start(Stage primaryStage) throws Exception 
 	{
@@ -210,10 +241,26 @@ public class AnimateSnowman extends Application
 
 		animationPane.getChildren().addAll(sun, head, chest, bottom, leftArm, rightArm, heart, leftEye, rightEye, mouth);
 		animationPane.setStyle("-fx-background-color: ghostwhite");
-		
+
+        buttonHBox.setAlignment(Pos.BASELINE_CENTER);
+        buttonHBox.setPadding(new Insets(10));
+        buttonHBox.setSpacing(10);
+        buttonHBox.getChildren().add(startAnimation);
+        buttonHBox.getChildren().add(exitAnimation);
+
+
+       //Add the buttons
+        borderPane.setBottom(buttonHBox);
+
+        borderPane.setCenter(animationPane);
+
 		primaryStage.setTitle("Animate Rectangle");
-    	Scene scene = new Scene(animationPane,SCENE_WIDTH,SCENE_HEIGHT);
+    	Scene scene = new Scene(borderPane,SCENE_WIDTH,SCENE_HEIGHT);
     	primaryStage.setScene(scene);
+        primaryStage.setMaxHeight(SCENE_HEIGHT + 50);
+        primaryStage.setMinHeight(SCENE_HEIGHT + 50);
+        primaryStage.setMaxWidth(SCENE_WIDTH);
+        primaryStage.setMinWidth(SCENE_WIDTH);
     	primaryStage.show();
 	}
 	
