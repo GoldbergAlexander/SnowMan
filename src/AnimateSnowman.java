@@ -3,7 +3,8 @@
     import javafx.animation.KeyValue;
     import javafx.animation.Timeline;
     import javafx.application.Application;
-    import javafx.geometry.Insets;
+	import javafx.event.ActionEvent;
+	import javafx.geometry.Insets;
     import javafx.geometry.Pos;
     import javafx.scene.Scene;
     import javafx.scene.control.Button;
@@ -16,9 +17,10 @@
     import javafx.util.Duration;
     import javafx.scene.Group;
     import javafx.scene.Node;
+	import javafx.event.EventHandler;
     import javafx.scene.effect.*;
 
-    import java.util.Objects;
+	import java.util.Objects;
 
 
     public class AnimateSnowman extends Application
@@ -39,11 +41,7 @@
 	
 	static Arc mouth = new Arc();
 
-	Button startAnimation = new Button();
-	Button exitAnimation = new Button();
 
-    BorderPane borderPane = new BorderPane();
-    HBox buttonHBox = new HBox();
 
     Group snowManGroup = new Group();
 	
@@ -223,21 +221,41 @@
 	@Override
 	public void start(Stage primaryStage) throws Exception 
 	{
+		Button startAnimation = new Button();
+		Button exitAnimation = new Button();
+
+		BorderPane borderPane = new BorderPane();
+		HBox buttonHBox = new HBox();
+
 		startAnimation.setText("Start Animation");
 		exitAnimation.setText("Exit Animation");
-		
-		drawSun();
-		drawHead();
-		drawChest();
-		drawBottom();
-		drawHeart();
-		
-		drawLeftEye();
-		drawRightEye();
-		drawMouth();
-		
-		drawLeftArm();
-		drawRightArm();
+
+		startAnimation.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent event)
+			{
+
+				drawSun();
+				drawHead();
+				drawChest();
+				drawBottom();
+				drawHeart();
+
+				drawLeftEye();
+				drawRightEye();
+				drawMouth();
+
+				drawLeftArm();
+				drawRightArm();
+
+			}
+		});
+
+		//TODO: Add an exit command to the exitAnimation button in order to allow the user to exit the program from within instead of clicking the X button.
+		//TODO: Furthermore, I added an action event for the startAnimation button for it to start up the animation, could be better.
+
+
 
 		animationPane.getChildren().addAll(sun, head, chest, bottom, leftArm, rightArm, heart, leftEye, rightEye, mouth);
 		animationPane.setStyle("-fx-background-color: ghostwhite");
@@ -254,13 +272,18 @@
 
         borderPane.setCenter(animationPane);
 
+
+
 		primaryStage.setTitle("Animate Rectangle");
+
+
+
     	Scene scene = new Scene(borderPane,SCENE_WIDTH,SCENE_HEIGHT);
-    	primaryStage.setScene(scene);
-        primaryStage.setMaxHeight(SCENE_HEIGHT + 50);
-        primaryStage.setMinHeight(SCENE_HEIGHT + 50);
-        primaryStage.setMaxWidth(SCENE_WIDTH);
-        primaryStage.setMinWidth(SCENE_WIDTH);
+		primaryStage.setScene(scene);
+		primaryStage.setMaxHeight(SCENE_HEIGHT + 50);
+		primaryStage.setMinHeight(SCENE_HEIGHT + 50);
+		primaryStage.setMaxWidth(SCENE_WIDTH);
+		primaryStage.setMinWidth(SCENE_WIDTH);
     	primaryStage.show();
 	}
 	
