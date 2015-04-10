@@ -1,5 +1,6 @@
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -17,14 +18,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Ellipse;
+import javafx.scene.shape.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 
-    public class AnimateSnowman extends Application
+public class AnimateSnowman extends Application
 {
 	static Circle head = new Circle();
 	static Circle chest = new Circle();
@@ -50,10 +49,26 @@ import javafx.util.Duration;
 
     private void drawSun()
 	{
-		sun.setCenterX(SCENE_WIDTH);
+
+
+        sun.setCenterX(SCENE_WIDTH);
 		sun.setCenterY(0);
         sun.setRadius(75);
         sun.setFill(Color.YELLOW);
+
+        Path path = new Path();
+        path.getElements().add(new MoveTo(-100, 200));
+        path.getElements().add(new CubicCurveTo(-100, 200, SCENE_WIDTH / 2, -100, SCENE_WIDTH + 100, 200));
+        path.setFill(Color.BLACK);
+        PathTransition pathTransition = new PathTransition();
+        pathTransition.setDuration(Duration.millis(10000));
+        pathTransition.setPath(path);
+        pathTransition.setNode(sun);
+        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        pathTransition.setCycleCount(Timeline.INDEFINITE);
+        pathTransition.setAutoReverse(false);
+        pathTransition.play();
+
 	}
 
 	private void drawHead()
