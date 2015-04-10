@@ -1,9 +1,18 @@
+/*
+* Name: Michael Kovalsky, Alexander Goldberg
+* Date: 4/10/2015
+* Class: CSCI1302
+* Purpose: To create an animated snowman utilizing built in Javafx 2D figures such as circles, ovals, as well as using
+* concepts such as Timeline, keyFrame, keyValue, and fading.
+* */
+
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -26,6 +35,8 @@ public class AnimateSnowman extends Application
 	static Circle rightEye = new Circle();
 	static Circle sun = new Circle();
 	static Circle heart = new Circle();
+	static Circle boulder = new Circle();
+	static Group circles = new Group();
 
 	static Ellipse leftArm = new Ellipse();
 	static Ellipse rightArm = new Ellipse();
@@ -43,6 +54,30 @@ public class AnimateSnowman extends Application
 	static HBox hbox = new HBox();
 
 	static Timeline timeLine;
+
+
+	private void drawRollingBoulders()
+	{
+		boulder.setCenterX(SCENE_WIDTH);
+		boulder.setCenterY(SCENE_HEIGHT - 10);
+		boulder.setRadius(25);
+
+		boulder.setFill(Color.BLACK);
+
+		timeLine = new Timeline();
+		timeLine.setCycleCount(Timeline.INDEFINITE);
+		timeLine.setAutoReverse(true);
+
+
+			KeyValue boulderValue = new KeyValue(boulder.centerXProperty(), 0);
+			KeyFrame keyFrame  = new KeyFrame(Duration.millis(5000), boulderValue);
+
+			timeLine.getKeyFrames().addAll(keyFrame);
+			timeLine.play();
+
+
+
+	}
 
 	private void drawSun()
 	{
@@ -179,12 +214,13 @@ public class AnimateSnowman extends Application
 		timeLine.play();
 	}
 
-	private void drawBottom()
-	{
+	private void drawBottom() {
 		bottom.setCenterX(SCENE_WIDTH / 2);
 		bottom.setCenterY(SCENE_HEIGHT - 85);
 		bottom.setRadius(65);
 		bottom.setFill(Color.AQUAMARINE);
+
+
 	}
 
 	private void drawLeftArm()
@@ -227,7 +263,7 @@ public class AnimateSnowman extends Application
 		timeLine.play();
 	}
 
-	public void drawNght()
+	public void drawNight()
 	{
 		night.setX(0);
 		night.setY(0);
@@ -249,7 +285,7 @@ public class AnimateSnowman extends Application
 		//startAnimation.setText("Start Animation");
 		//exitAnimation.setText("Exit Animation");
 
-		drawNght();
+		drawNight();
 		drawSun();
 		drawMoon();
 
@@ -264,8 +300,10 @@ public class AnimateSnowman extends Application
 
 		drawLeftArm();
 		drawRightArm();
+		drawRollingBoulders();
 
-		animationPane.getChildren().addAll(sun, head, chest, bottom, leftArm, rightArm, heart, leftEye, rightEye, mouth, night, moon);
+
+		animationPane.getChildren().addAll(sun, head, chest, bottom, leftArm, rightArm, heart, leftEye, rightEye, mouth, night, moon, boulder);
 		animationPane.setStyle("-fx-background-color: red");
 
 		primaryStage.setTitle("Animate Rectangle");
