@@ -1,19 +1,13 @@
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.PathTransition;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.effect.BlendMode;
-import javafx.scene.effect.BoxBlur;
-import javafx.scene.effect.Glow;
+import javafx.scene.effect.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -22,6 +16,12 @@ import javafx.scene.shape.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/*
+* Creators: Michael Kovalsky and Alexander Goldberg
+* Class: CSCI 1302
+* Date: 4/11/2015
+* Purpose: To animate a snowman, as well as practice other animation methods.
+* */
 
 public class AnimateSnowman extends Application
 {
@@ -34,42 +34,103 @@ public class AnimateSnowman extends Application
 	static Circle heart = new Circle();
 	static Ellipse leftArm = new Ellipse();
 	static Ellipse rightArm = new Ellipse();
+
 	static Arc mouth = new Arc();
+	static Arc moon = new Arc();
+
+	static Rectangle night = new Rectangle();
+	static Rectangle day = new Rectangle();
+
 	static Pane animationPane = new Pane();
 	static HBox hbox = new HBox();
 	static Timeline timeLine;
     final int SCENE_WIDTH = 500;
     final int SCENE_HEIGHT = 350;
-    Group snowManGroup = new Group();
     Pane tempPane = new Pane();
 
-    public static void main(String[] args) {
-        launch(args);
+    public static void main(String[] args)
+	{
+
+		launch(args);
     }
 
-    private void drawSun()
+
+    private void drawPlanetaryBodies()
 	{
+
+
+		night.setX(0);
+		night.setY(0);
+		night.setWidth(SCENE_WIDTH);
+		night.setHeight(SCENE_HEIGHT-10);
+		night.setFill(Color.BLACK);
+
+		FadeTransition ft = new FadeTransition(Duration.millis(1000), night);
+		ft.setFromValue(1.0);
+		ft.setToValue(0.0);
+		ft.setCycleCount(1);
+		ft.setAutoReverse(false);
+		ft.play();
+
+		FadeTransition ft1 = new FadeTransition(Duration.millis(1000), night);
+		ft1.setFromValue(0.0);
+		ft1.setToValue(1.0);
+		ft1.setCycleCount(1);
+		ft1.setAutoReverse(false);
+		ft1.play();
 
 
         sun.setCenterX(SCENE_WIDTH);
 		sun.setCenterY(0);
-        sun.setRadius(75);
+        sun.setRadius(55);
         sun.setFill(Color.YELLOW);
+		sun.setEffect(new Bloom());
 
         Path path = new Path();
         path.getElements().add(new MoveTo(-100, 200));
         path.getElements().add(new CubicCurveTo(-100, 200, SCENE_WIDTH / 2, -100, SCENE_WIDTH + 100, 200));
         path.setFill(Color.BLACK);
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.millis(10000));
-        pathTransition.setPath(path);
-        pathTransition.setNode(sun);
-        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        pathTransition.setCycleCount(Timeline.INDEFINITE);
-        pathTransition.setAutoReverse(false);
-        pathTransition.play();
+
+		PathTransition sunTransition = new PathTransition();
+        sunTransition.setDuration(Duration.millis(10000));
+        sunTransition.setPath(path);
+        sunTransition.setNode(sun);
+        sunTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        sunTransition.setAutoReverse(false);
+
+
+		moon.setRadiusX(45);
+		moon.setRadiusY(45);
+		moon.setType(ArcType.OPEN);
+		moon.setCenterX(SCENE_WIDTH);
+		moon.setCenterY(0);
+		moon.setStartAngle(135);
+		moon.setLength(180);
+		moon.setStrokeType(StrokeType.INSIDE);
+		moon.setFill(Color.WHEAT);
+		moon.setEffect(new Lighting());
+
+		Path moonPath = new Path();
+		moonPath.getElements().add(new MoveTo(-100, 200));
+		moonPath.getElements().add(new CubicCurveTo(-100, 200, SCENE_WIDTH / 2, -100, SCENE_WIDTH + 100, 200));
+		moonPath.setFill(Color.BLACK);
+
+		PathTransition moonTransition = new PathTransition();
+		moonTransition.setDuration(Duration.millis(10000));
+		moonTransition.setPath(path);
+		moonTransition.setNode(moon);
+		moonTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+		moonTransition.setAutoReverse(false);
+
+		SequentialTransition sequentialTransition = new SequentialTransition();
+		sequentialTransition.setCycleCount(Timeline.INDEFINITE);
+		sequentialTransition.setAutoReverse(false);
+		sequentialTransition.getChildren().addAll(ft, sunTransition, ft1, moonTransition);
+		sequentialTransition.play();
+
 
 	}
+
 
 	private void drawHead()
 	{
@@ -244,7 +305,7 @@ public class AnimateSnowman extends Application
 		startAnimation.setText("Start Animation");
 		exitAnimation.setText("Exit Animation");
 
-        drawSun();
+		drawPlanetaryBodies();
         drawHead();
         drawChest();
         drawBottom();
@@ -260,44 +321,39 @@ public class AnimateSnowman extends Application
         setUpBlending();
 
         startAnimation.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                borderPane.setCenter(animationPane);
-            }
+			@Override
+			public void handle(ActionEvent event) {
+				borderPane.setCenter(animationPane);
+			}
 		});
         exitAnimation.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                borderPane.setCenter(tempPane);
-            }
-        });
+			@Override
+			public void handle(ActionEvent event) {
+				borderPane.setCenter(tempPane);
+			}
+		});
 
 
-		animationPane.getChildren().addAll(sun, head, chest, bottom, leftArm, rightArm, heart, leftEye, rightEye, mouth);
-		animationPane.setStyle("-fx-background-color: ghostwhite");
+		animationPane.getChildren().addAll(night, sun, head, chest, bottom, leftArm, rightArm, heart, leftEye, rightEye, mouth, moon);
+		animationPane.setStyle("-fx-background-color: #5b61ff");
 
         buttonHBox.setAlignment(Pos.BASELINE_CENTER);
         buttonHBox.setPadding(new Insets(10));
         buttonHBox.setSpacing(10);
         buttonHBox.getChildren().add(startAnimation);
         buttonHBox.getChildren().add(exitAnimation);
+		buttonHBox.setStyle("-fx-background-color: red");
 
 
        //Add the buttons
         borderPane.setBottom(buttonHBox);
 
-        // borderPane.setCenter(tempPane);
-
-
-
-		primaryStage.setTitle("Animate Rectangle");
-
-
+		primaryStage.setTitle("Animated Snowman");
 
     	Scene scene = new Scene(borderPane,SCENE_WIDTH,SCENE_HEIGHT);
 		primaryStage.setScene(scene);
-		primaryStage.setMaxHeight(SCENE_HEIGHT + 50);
-		primaryStage.setMinHeight(SCENE_HEIGHT + 50);
+		primaryStage.setMaxHeight(SCENE_HEIGHT + 100);
+		primaryStage.setMinHeight(SCENE_HEIGHT + 70);
 		primaryStage.setMaxWidth(SCENE_WIDTH);
 		primaryStage.setMinWidth(SCENE_WIDTH);
     	primaryStage.show();
