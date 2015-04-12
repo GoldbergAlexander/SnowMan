@@ -39,7 +39,6 @@ public class AnimateSnowman extends Application
 	static Arc moon = new Arc();
 
 	static Rectangle night = new Rectangle();
-	static Rectangle day = new Rectangle();
 
 	static Pane animationPane = new Pane();
 	static HBox hbox = new HBox();
